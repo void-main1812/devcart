@@ -1,18 +1,16 @@
 "use client";
 
 import { PRODUCT_CATEGORIES } from "@/config";
-import { useEffect, useRef, useState } from "react";
+import { useClickAway } from "@uidotdev/usehooks";
+import { useEffect, useState } from "react";
 import NavItem from "./NavItem";
-import { useOnClickOutside } from "@/hooks/use-on-click-outside";
 
 const NavItems = () => {
   const [activeIndex, setActiveIndex] = useState<null | number>(null);
 
   const isAnyOpen = activeIndex !== null;
 
-  const navRef = useRef<HTMLDivElement | null>(null);
-
-  useOnClickOutside(navRef, () => setActiveIndex(null));
+  const navRef = useClickAway<HTMLDivElement>(() => setActiveIndex(null));
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
