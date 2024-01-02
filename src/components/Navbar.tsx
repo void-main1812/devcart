@@ -27,7 +27,7 @@ const Navbar = () => {
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   {user ? null : (
                     <Link
-                      href="/sign In"
+                      href="/sign-in"
                       className={buttonVariants({ variant: "outline" })}
                     >
                       Sign In
@@ -39,7 +39,7 @@ const Navbar = () => {
                   {user ? (
                     <p></p>
                   ) : (
-                    <Link href="/sign Up" className={buttonVariants()}>
+                    <Link href="/sign-up" className={buttonVariants()}>
                       Create Account
                     </Link>
                   )}
@@ -51,8 +51,8 @@ const Navbar = () => {
                       <span className="h-6 w-px bg-gray-200" aria-hidden />
                     </div>
                   )}
-                  <div className="ml-4 flow-root lg:ml-6" >
-                    <Cart/>
+                  <div className="ml-4 flow-root lg:ml-6">
+                    <Cart />
                   </div>
                 </div>
               </div>
