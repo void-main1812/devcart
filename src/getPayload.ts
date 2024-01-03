@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import path from "path";
-import payload from "payload";
+import payload, { Payload } from "payload";
 import { InitOptions } from "payload/config";
 
 dotenv.config({
@@ -20,7 +20,9 @@ interface Args {
 }
 
 //  The getPayloadClient function will return the cached payload client if it exists, otherwise it will create a new payload client and cache it
-export const getPayloadClient = async ({ initOptions }: Args) => {
+export const getPayloadClient = async ({
+  initOptions,
+}: Args = {}): Promise<Payload> => {
   // If the PAYLOAD_SECRET is missing from the .env file, throw an error
   if (!process.env.PAYLOAD_SECRET) {
     throw new Error("PAYLOAD_SECRET is missing from");
