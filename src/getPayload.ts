@@ -2,10 +2,22 @@ import dotenv from "dotenv";
 import path from "path";
 import payload, { Payload } from "payload";
 import { InitOptions } from "payload/config";
+import nodemailer from "nodemailer";
 
 dotenv.config({
   // __dirname is the directory of the current file & '../.env' is the path to the .env file from this directory
   path: path.resolve(__dirname, "../.env"),
+});
+
+// Create a nodemailer transporter using the Resend SMTP service (https://resend.com) and the API key from the .env file (RESEND_API_KEY) as the password for the SMTP service (the username is always "resend")
+const transporter = nodemailer.createTransport({
+  host: "smtp.resend.com",
+  secure: true,
+  port: 465,
+  auth: {
+    user: "resend",
+    pass: process.env.RESEND_API_KEY,
+  },
 });
 
 // The global object is a special object that is available everywhere in your application, we are caching the payload client here by attaching it to the global object
@@ -37,6 +49,11 @@ export const getPayloadClient = async ({
   //  cached promise = the promise returned from the payload init function that we have already created and cached on the global object (this promise will resolve to the payload client)
   if (!cached.promise) {
     cached.promise = payload.init({
+      email: {
+        transport: transporter,
+        fromAddress: "sour.bt21cs56@opju.ac.in",
+        fromName: "DevCart 🛒",
+      },
       secret: process.env.PAYLOAD_SECRET,
       local: initOptions?.express ? false : true,
       ...(initOptions || {}),

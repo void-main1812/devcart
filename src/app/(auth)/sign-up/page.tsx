@@ -31,10 +31,10 @@ const page = () => {
     resolver: zodResolver(AuthCredentialsValidator),
   });
 
+  const { mutate, isLoading } = trpc.auth.createPayloadUser.useMutation({});
 
   const onSubmit = ({ email, password }: TAuthCredentialsValidator) => {
-    // TODO: Handle submit
-    console.log(email, password);
+    mutate({ email, password });
   };
 
   return (
