@@ -36,6 +36,7 @@ const page = () => {
     resolver: zodResolver(AuthCredentialsValidator),
   });
 
+
   const searchParams = useSearchParams();
   const isSeller = searchParams.get("as") === "seller";
   const origin = searchParams.get("origin");
