@@ -22,7 +22,7 @@ const UserAccountNav = ({ user }: { user: User }) => {
         <Button
           variant={"outline"}
           size={"sm"}
-          className="relative flex justify-center items-center gap-x-4"
+          className="relative flex justify-center items-center gap-x-2"
         >
           <UserCheck2 className="h-4 w-4" />
           My Account
