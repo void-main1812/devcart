@@ -5,8 +5,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import type SwiperType from "swiper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pagination } from "swiper/modules";
+import { cn } from "@/lib/utils";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ImageSliderProps {
   urls: string[];
@@ -16,18 +18,64 @@ const ImageSlider = ({ urls }: ImageSliderProps) => {
   const [swiper, setSwiper] = useState<null | SwiperType>(null);
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
+  const [slideConfig, setSlideConfig] = useState({
+    isBegining: true,
+    isEnd: activeIndex === (urls.length ?? 0) - 1,
+  });
+
+  useEffect(() => {
+    swiper?.on("slideChange", ({ activeIndex }) => {
+      setActiveIndex(activeIndex);
+      setSlideConfig({
+        isBegining: activeIndex === 0,
+        isEnd: activeIndex === (urls.length ?? 0) - 1,
+      });
+    });
+  }, [swiper, urls]);
+
   const activeStyles =
-    "active:scale-[0.97] grid opacity-100 hover:scale-105 absolute top-1/2 -translate-y-1/2 aspect-square h-8 w-8 z-50 place-items-center rounder-full border-2 bg-white border-zinc-300";
+    "active:scale-[0.97] grid opacity-100 hover:scale-105 absolute top-1/2 -translate-y-1/2 aspect-square h-8 w-8 z-50 place-items-center rounded-full border-2 bg-white border-zinc-300";
   const inActiveStyles = "hidden text-gray-400";
 
   return (
     <div className="group relative bg-zinc-100 aspect-square overflow-hidden rounded-xl">
       <div className="absolute z-10 inset-0 opacity-0 group-hover:opacity-100 transition">
-        <button></button>
-        <button></button>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            swiper?.slideNext();
+          }}
+          className={cn(activeStyles, "right-3 transition", {
+            [inActiveStyles]: slideConfig.isEnd,
+            "hover:bg-primary-300 textprimary-800 opacity-100":
+              !slideConfig.isEnd,
+          })}
+          aria-label="next image"
+        >
+          <ChevronRight className="h-4 w-4 text-zinc-700" />
+        </button>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            swiper?.slidePrev();
+          }}
+          className={cn(activeStyles, "left-3 transition", {
+            [inActiveStyles]: slideConfig.isBegining,
+            "hover:bg-primary-300 textprimary-800 opacity-100":
+              !slideConfig.isBegining,
+          })}
+          aria-label="Previous image"
+        >
+          <ChevronLeft className="h-4 w-4 text-zinc-700" />
+        </button>
       </div>
 
       <Swiper
+        pagination={{
+          renderBullet: (_, className) => {
+            return `<span class="${className} rounded-full transition"></span>`;
+          },
+        }}
         onSwiper={(swiper) => setSwiper(swiper)}
         spaceBetween={50}
         slidesPerView={1}
