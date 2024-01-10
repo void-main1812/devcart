@@ -14,11 +14,19 @@ import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import Image from "next/image";
+import { useCart } from "@/hooks/use-cart";
 
 const Cart = () => {
-  const itemCount = 0;
+  const { items } = useCart();
+
+  const itemCount: number = items.length;
 
   const fee = 50;
+
+  const cartTotal = items.reduce(
+    (total, { product }) => total + product.price,
+    0
+  );
 
   return (
     <Sheet>
@@ -28,7 +36,7 @@ const Cart = () => {
           aria-hidden
         />
         <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-          1
+          {itemCount}
         </span>
       </SheetTrigger>
       <SheetContent className="flex w-full flex-col pr-0 sm:max-w-lg">
@@ -37,7 +45,11 @@ const Cart = () => {
         </SheetHeader>
         {itemCount > 0 ? (
           <>
-            <div className="flex w-full flex-col pr-6">cart items</div>
+            <div className="flex w-full flex-col pr-6">
+              {/* {items.map(({product}) => (
+                <CartItem key={product.id} />
+              ))} */}
+            </div>
             <div className="space-y-4 pr-6">
               <Separator />
               <div className="space-y-1.5 text-sm">
@@ -51,7 +63,9 @@ const Cart = () => {
                 </div>
                 <div className="flex">
                   <span className="flex-1">Total</span>
-                  <span>{formatPrice(fee, { currency: "INR" })}</span>
+                  <span>
+                    {formatPrice(cartTotal + fee, { currency: "INR" })}
+                  </span>
                 </div>
               </div>
               <SheetFooter>
