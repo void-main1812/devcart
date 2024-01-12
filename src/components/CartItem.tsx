@@ -1,5 +1,6 @@
 import { PRODUCT_CATEGORIES } from "@/config";
 import { useCart } from "@/hooks/use-cart";
+import { formatPrice } from "@/lib/utils";
 import { Product } from "@/payload-type";
 import { ImageIcon, Trash2, X } from "lucide-react";
 import Image from "next/image";
@@ -52,6 +53,12 @@ const CartItem = ({ product }: { product: Product }) => {
               </button>
             </div>
           </div>
+        </div>
+
+        <div className="flex flex-col space-y-1 font-medium">
+          <span className="ml-auto line-clamp-1 text-sm">
+            {formatPrice(product.price)}
+          </span>
         </div>
       </div>
     </div>
