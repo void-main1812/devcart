@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { PRODUCT_CATEGORIES } from "@/config";
 import { useCart } from "@/hooks/use-cart";
 import { cn, formatPrice } from "@/lib/utils";
-import { Currency, ImageIcon, X } from "lucide-react";
+import { Currency, ImageIcon, Loader2, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -17,6 +17,11 @@ const page = () => {
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  const cartTotal = items.reduce(
+    (total, { product }) => total + product.price,
+    0
+  );
 
   return (
     <div className="bg-white">
@@ -98,7 +103,7 @@ const page = () => {
                               </p>
                             </div>
                             <p className="mt-1 text-sm font-medium text-gray-900">
-                              {formatPrice(product.price)}
+                              {formatPrice(product.price, { currency: "INR" })}
                             </p>
                           </div>
                           <div className="mt-4 sm:mt-0 sm:pr-9 w-20">
@@ -122,6 +127,53 @@ const page = () => {
                 })}
             </ul>
           </div>
+
+          <section className="mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8">
+            <h2 className="text-lg font-medium text-gray-900">Order Summary</h2>
+            <div className="mt-6 space-y-6">
+              <div className="flex items-center justify-between">
+                <p className="text-sm text-gray-600">Subtotal</p>
+                <p className="text-sm font-medium text-gray-900">
+                  {isMounted ? (
+                    formatPrice(cartTotal ? cartTotal : 0, { currency: "INR" })
+                  ) : (
+                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                  )}
+                </p>
+              </div>
+              <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+                <div className="flex items-center text-sm text-muted-foreground">
+                  <span>Flat transaction Fee</span>
+                </div>
+                <div className="text-sm font-medium text-gray-900">
+                  {isMounted ? (
+                    formatPrice(50, { currency: "INR" })
+                  ) : (
+                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                  )}
+                </div>
+              </div>
+              <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+                <div className="text-base font-medium text-gray-900">
+                  Order Total
+                </div>
+                <div className="text-base font-medium text-gray-900">
+                  {isMounted ? (
+                    formatPrice(cartTotal ? cartTotal + 50 : 0, {
+                      currency: "INR",
+                    })
+                  ) : (
+                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="mt-8">
+              <Button className="w-full" size={"lg"}>
+                Proceed to Checkout
+              </Button>
+            </div>
+          </section>
         </div>
       </div>
     </div>
