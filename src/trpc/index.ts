@@ -3,9 +3,11 @@ import { authRouter } from "./auth-router";
 import { publicProcedure, router } from "./trpc";
 import { QueryValidator } from "../lib/validators/Query-Validators";
 import { getPayloadClient } from "../getPayload";
+import { paymentRouter } from "./payments-router";
 
 export const appRouter = router({
   auth: authRouter,
+  payment: paymentRouter,
 
   getInfiniteProducts: publicProcedure
     .input(
@@ -19,15 +21,17 @@ export const appRouter = router({
       const { query, cursor } = input;
       const { sort, limit, ...queryOpts } = query;
 
-      const parsedQueryOptions: Record<string, { equals: string }> = {};
+      const payload = await getPayloadClient();
+
+      const parsedQueryOpts: Record<string, { equals: string }> = {};
 
       Object.entries(queryOpts).forEach(([key, value]) => {
-        parsedQueryOptions[key] = { equals: value };
+        parsedQueryOpts[key] = {
+          equals: value,
+        };
       });
 
       const page = cursor || 1;
-
-      const payload = await getPayloadClient();
 
       const {
         docs: items,
@@ -39,7 +43,7 @@ export const appRouter = router({
           approvedForSale: {
             equals: "approved",
           },
-          ...parsedQueryOptions,
+          ...parsedQueryOpts,
         },
         sort,
         depth: 1,
