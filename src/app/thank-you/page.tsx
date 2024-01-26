@@ -70,6 +70,7 @@ const ThankYouPage = async ({ searchParams }: pageProps) => {
             <h1 className="mt-2 text-4xl font-bold tracking-tight text-zinc-900 sm:text-5xl">
               Thanks for your order!
             </h1>
+            {/* checking while the order is valid or not */}
             {order._paid ? (
               <p className="mt-2 text-base text-muted-foreground">
                 Your Order was processed and your assets are available to
