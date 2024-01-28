@@ -1,13 +1,14 @@
-import { getServerSideUser } from "@/lib/payload.util";
-import Image from "next/image";
-import React from "react";
-import { cookies } from "next/headers";
-import { getPayloadClient } from "@/getPayload";
-import { notFound, redirect } from "next/navigation";
-import { Product, ProductFile } from "@/payload-type";
-import { PRODUCT_CATEGORIES } from "@/config";
-import { cn, formatPrice } from "@/lib/utils";
+import PaymentStatus from "@/components/PaymentStatus";
 import { buttonVariants } from "@/components/ui/button";
+import { PRODUCT_CATEGORIES } from "@/config";
+import { getPayloadClient } from "@/getPayload";
+import { getServerSideUser } from "@/lib/payload.util";
+import { cn, formatPrice } from "@/lib/utils";
+import { Product, ProductFile, User } from "@/payload-type";
+import { cookies } from "next/headers";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound, redirect } from "next/navigation";
 
 interface pageProps {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -62,7 +63,7 @@ const ThankYouPage = async ({ searchParams }: pageProps) => {
       </div>
 
       <div className="overflow-scroll h-[100vh]">
-        <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8 lg:py-32 xl:gap-x-24">
+        <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8 lg:py-24 xl:gap-x-24">
           <div className="lg: col-start-2">
             <p className="text-sm font-medium text-zinc-600">
               Order Successful
@@ -165,6 +166,26 @@ const ThankYouPage = async ({ searchParams }: pageProps) => {
                   })}
                 </p>
               </div>
+              <div className="flex items-center justify-between border-t border-gray-200 pt-6 text-gray-900">
+                <p className="text-base ">Total</p>
+                <p className="text-base ">
+                  {formatPrice(orderTotal + 50, { currency: "INR" })}
+                </p>
+              </div>
+            </div>
+
+            <PaymentStatus
+              isPaid={order._paid}
+              orderEmail={(order.user as User).email}
+              orderId={order.id}
+            />
+            <div className="mt-16 border-t border-gray-200 py-6 text-right">
+              <Link
+                href="/products"
+                className={buttonVariants({ variant: "link" })}
+              >
+                Continue Shopping &rarr;
+              </Link>
             </div>
           </div>
         </div>
