@@ -5,6 +5,7 @@ import { stripe } from "./lib/stripe";
 import { getPayloadClient } from "./getPayload";
 import { Product } from "./payload-type";
 import { Resend } from "resend";
+import { ReciptEmailHtml } from "./components/emails/ReciptEmail";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -80,12 +81,12 @@ export const stripeWebhookHandler = async (
     });
 
     // send receipt
-    /* TODO try {
+    try {
       const data = await resend.emails.send({
         from: "DigitalHippo <hello@joshtriedcoding.com>",
         to: [user.email],
         subject: "Thanks for your order! This is your receipt.",
-        html: ReceiptEmailHtml({
+        html: ReciptEmailHtml({
           date: new Date(),
           email: user.email,
           orderId: session.metadata.orderId,
@@ -95,7 +96,7 @@ export const stripeWebhookHandler = async (
       res.status(200).json({ data });
     } catch (error) {
       res.status(500).json({ error });
-    } */
+    }
   }
 
   return res.status(200).send();

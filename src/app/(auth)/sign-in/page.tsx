@@ -17,9 +17,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { ZodError } from "zod";
 
-const page = () => {
+const Page = () => {
   const [isClient, setIsClient] = useState(false);
 
   const router = useRouter();
@@ -35,7 +34,6 @@ const page = () => {
   } = useForm<TAuthCredentialsValidator>({
     resolver: zodResolver(AuthCredentialsValidator),
   });
-
 
   const searchParams = useSearchParams();
   const isSeller = searchParams.get("as") === "seller";
@@ -177,4 +175,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
