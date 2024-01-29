@@ -28,7 +28,7 @@ const BREADCRUMBS = [
   },
 ];
 
-const page = async ({ params }: PageProps) => {
+const Page = async ({ params }: PageProps) => {
   const { productId } = params;
 
   const payload = await getPayloadClient();
@@ -157,4 +157,4 @@ const page = async ({ params }: PageProps) => {
   );
 };
 
-export default page;
+export default Page;

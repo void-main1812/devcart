@@ -26,7 +26,7 @@ const perks = [
   },
 ];
 
-const page = () => {
+const Page = () => {
   return (
     <>
       <MaxWidthWrapper>
@@ -83,4 +83,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

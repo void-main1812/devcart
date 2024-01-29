@@ -11,7 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const page = () => {
+const Page = () => {
   const { items, removeItem } = useCart();
 
   const router = useRouter();
@@ -66,7 +66,7 @@ const page = () => {
                 </div>
                 <h3 className="font-semibold text-2xl">Your Cart is Empty</h3>
                 <p className="text-muted-foreground text-center">
-                  Looks like you haven't added anything to your cart yet
+                  Looks like you haven&apos;t added anything to your cart yet
                 </p>
               </div>
             ) : null}
@@ -201,4 +201,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
