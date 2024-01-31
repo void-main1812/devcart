@@ -5,12 +5,9 @@ const isAdminOrHasAccessToImages =
   (): Access =>
   async ({ req }) => {
     const user = req.user as User | undefined;
-    if (!user) {
-      return false;
-    }
-    if (user.role === "admin") {
-      return true;
-    }
+
+    if (!user) return false;
+    if (user.role === "admin") return true;
 
     return {
       user: {
@@ -30,9 +27,9 @@ export const Media: CollectionConfig = {
   },
   access: {
     read: async ({ req }) => {
-      const referrer = req.headers.referer;
+      const referer = req.headers.referer;
 
-      if (!req.user || !referrer?.includes("sell")) {
+      if (!req.user || !referer?.includes("sell")) {
         return true;
       }
 

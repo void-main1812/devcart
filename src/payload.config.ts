@@ -1,9 +1,9 @@
+import { buildConfig } from "payload/config";
+import { webpackBundler } from "@payloadcms/bundler-webpack";
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
 import { slateEditor } from "@payloadcms/richtext-slate";
-import { webpackBundler } from "@payloadcms/bundler-webpack";
-import { buildConfig } from "payload/config";
 import path from "path";
-import Users from "./collections/Users";
+import { Users } from "./collections/Users";
 import dotenv from "dotenv";
 import { Products } from "./collections/Product/Products";
 import { Media } from "./collections/Media";
@@ -24,7 +24,7 @@ export default buildConfig({
     user: "users",
     bundler: webpackBundler(),
     meta: {
-      titleSuffix: "- DevCart",
+      titleSuffix: "- DigitalHippo",
       favicon: "/favicon.ico",
       ogImage: "/thumbnail.jpg",
     },
@@ -37,6 +37,6 @@ export default buildConfig({
     url: process.env.MONGODB_URL!,
   }),
   typescript: {
-    outputFile: path.resolve(__dirname, "payload-type.ts"),
+    outputFile: path.resolve(__dirname, "payload-types.ts"),
   },
 });
